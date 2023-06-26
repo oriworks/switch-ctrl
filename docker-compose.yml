@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
     database:
-        container_name: template-database
+        container_name: switch-ctrl-database
         build: .docker/mysql
         command: --innodb-use-native-aio=0
         restart: always
@@ -14,10 +14,10 @@ services:
         networks:
             - local
         environment:
-            - MYSQL_DATABASE=template
+            - MYSQL_DATABASE=switch-ctrl
             - MYSQL_ROOT_PASSWORD=root
     website:
-        container_name: template-website
+        container_name: switch-ctrl-website
         build:
             target: local
             context: .
@@ -32,7 +32,7 @@ services:
             - local
         labels:
             - "traefik.docker.network=traefik-proxy"
-            - "traefik.http.routers.website.rule=Host(`template.local`)"
+            - "traefik.http.routers.website.rule=Host(`switch-ctrl.local`)"
 
 networks:
     proxy:
