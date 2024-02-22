@@ -1,10 +1,8 @@
 {
     "folders": [
         {
-            "path": "docker"
-        },
-        {
-            "path": "scripts"
+            "path": ".",
+            "name": "root",
         },
         {
             "path": "source/website",
