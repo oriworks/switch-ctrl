@@ -1,0 +1,18 @@
+{
+    "folders": [
+        {
+            "path": "docker"
+        },
+        {
+            "path": "scripts"
+        },
+        {
+            "path": "source/website",
+            "name": "website",
+            "settings": {
+                "php.validate.executablePath": "php"
+            }
+        },
+    ],
+    "settings": {}
+}

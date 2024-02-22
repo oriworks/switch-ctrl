@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+    database:
+        container_name: switch-ctrl-database
+        build:
+            context: ..
+            dockerfile: docker/mysql/Dockerfile
+        ports:
+            - 33060:3306
+        command: --innodb_use_native_aio=0
+        restart: always
+        tty: true
+        volumes:
+            - ../.data:/var/lib/mysql
+        networks:
+            - local
+        env_file:
+            - ../.env
+    website:
+        container_name: switch-ctrl-website
+        build:
+            target: development
+            context: ..
+            dockerfile: docker/php/Dockerfile
+        ports:
+            - 8000:8000
+        volumes:
+            - ../source/website:/var/www
+            - ~/.ssh:/root/.ssh
+            - ../docker/php/php.ini:/usr/local/etc/php/php.ini
+        networks:
+            - local
+        depends_on:
+            - database
+
+networks:
+    local:
+        driver: bridge

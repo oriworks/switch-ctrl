@@ -1,0 +1,41 @@
+services:
+    phpmyadmin:
+        container_name: switch-ctrl-phpmyadmin
+        image: phpmyadmin
+        restart: always
+        env_file:
+            - ../.env
+        networks:
+            - local
+            - proxy
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.switch-ctrl-phpmyadmin.entrypoints=websecure"
+            - "traefik.http.routers.switch-ctrl-phpmyadmin.tls=true"
+            - "traefik.docker.network=traefik-proxy"
+            - "traefik.http.routers.switch-ctrl-phpmyadmin.rule=Host(`phpmyadmin.switch-ctrl.local`)"
+    database:
+        networks:
+            - local
+            - proxy
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.switch-ctrl-database.entrypoints=websecure"
+            - "traefik.http.routers.switch-ctrl-database.tls=true"
+            - "traefik.docker.network=traefik-proxy"
+            - "traefik.http.routers.switch-ctrl-database.rule=Host(`db.switch-ctrl.local`)"
+    website:
+        networks:
+            - local
+            - proxy
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.switch-ctrl-website.entrypoints=websecure"
+            - "traefik.http.routers.switch-ctrl-website.tls=true"
+            - "traefik.docker.network=traefik-proxy"
+            - "traefik.http.routers.switch-ctrl-website.rule=Host(`switch-ctrl.local`) || Host(`oriworks.switch-ctrl.local`) || Host(`aciff.switch-ctrl.local`) || Host(`classic.switch-ctrl.local`) || Host(`jet7.switch-ctrl.local`) || Host(`padel.switch-ctrl.local`)"
+
+networks:
+    proxy:
+        name: traefik-proxy
+        external: true
