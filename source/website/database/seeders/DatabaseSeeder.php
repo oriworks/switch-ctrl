@@ -21,12 +21,14 @@ class DatabaseSeeder extends Seeder
 
         $tenant = \App\Models\Central\Tenant::create([
             'id' => 'padel',
-            // 'tenancy_db_connection' => 'padel',
-            // 'tenancy_db_driver' => 'mysql',
-            // 'tenancy_db_host' => '172.18.0.1',
-            // 'tenancy_db_port' => '33061',
-            // 'tenancy_db_username' => 'root',
-            // 'tenancy_db_password' => 'root',
+            'tenancy_db_connection' => 'padel',
+            'tenancy_db_driver' => 'mysql',
+            'tenancy_db_host' => '172.18.0.1',
+            'tenancy_db_port' => '33061',
+            'tenancy_db_name' => 'padel_switch_ctrl',
+            'tenancy_db_password' => 'root',
+            'tenancy_db_username' => 'root',
+            'features_blog' => false,
         ]);
         $tenant->domains()->create([
             'domain' => 'padel.switch-ctrl.local',

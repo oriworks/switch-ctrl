@@ -107,6 +107,10 @@ class TenancyServiceProvider extends ServiceProvider
         $this->mapRoutes();
 
         $this->makeTenancyMiddlewareHighestPriority();
+
+        \Stancl\Tenancy\Features\TenantConfig::$storageToConfigMap = [
+            'features_blog' => 'switch-ctrl.features.blog',
+        ];
     }
 
     private function setupDatabaseConnections()

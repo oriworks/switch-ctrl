@@ -4,7 +4,7 @@ services:
         image: phpmyadmin
         restart: always
         env_file:
-            - ../.env
+            - ./.env
         networks:
             - local
             - proxy

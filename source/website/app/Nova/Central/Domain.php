@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Nova;
+namespace App\Nova\Central;
 
+use App\Nova\Resource;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class User extends Resource
+class Domain extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\User>
+     * @var class-string<\App\Models\Central\Domain>
      */
-    public static $model = \App\Models\User::class;
+    public static $model = \App\Models\Central\Domain::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'domain';
 
     /**
      * The columns that should be searched.
@@ -31,7 +31,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'domain',
     ];
 
     /**
@@ -43,22 +43,14 @@ class User extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::hidden(),
 
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
+            Text::make('Domain', 'domain')
+                ->rules('required', 'max:255')
+                ->creationRules('unique:domains,domain')
+                ->updateRules('unique:domains,domain,{{resourceId}}'),
 
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
-
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults()),
+            BelongsTo::make('Tenant', 'tenant', \App\Nova\Central\Tenant::class),
         ];
     }
 
